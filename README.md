@@ -46,7 +46,7 @@ O projeto é 100% front-end (HTML, CSS e JavaScript puro, sem frameworks ou buil
 
 GitHub não reproduz arquivos `.mp4` direto no README, então os vídeos abaixo foram convertidos para GIF apenas para esta prévia — na aplicação real eles tocam como vídeo nativo (mais leve e com melhor qualidade).
 
-**Seção introdutória** — vídeo institucional em loop no fundo do hero:
+**Seção introdutória** — vídeo institucional em loop no fundo do hero (vídeos desenvolvidos com Inteligência Artificial):
 
 <p align="center"><img src="assets/readme/restaurante.gif" width="480" alt="Vídeo institucional da seção introdutória"></p>
 
