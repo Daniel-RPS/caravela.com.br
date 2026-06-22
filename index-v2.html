@@ -1,0 +1,2015 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Caravela – Menu Digital</title>
+  <meta name="description" content="Caravela Restaurante de Frutos do Mar – Sabores do oceano com sofisticação e frescor. Localizado na Rua das Palmeiras, 299, Guadalupe." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    /* ==========================================
+       CSS VARIABLES & RESET
+    ========================================== */
+    :root {
+      --navy:        #0a1628;
+      --navy-mid:    #0f2044;
+      --navy-light:  #162d5c;
+      --ocean:       #1a4a8a;
+      --blue:        #2563c8;
+      --sky:         #4f9cf9;
+      --foam:        #b8d4f5;
+      --white:       #f0f6ff;
+      --off-white:   #c8daf0;
+      --gold:        #d4a843;
+      --gold-light:  #f0c96a;
+      --card-bg:     rgba(15, 32, 68, 0.85);
+      --border:      rgba(79, 156, 249, 0.18);
+      --border-gold: rgba(212, 168, 67, 0.35);
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body:    'DM Sans', sans-serif;
+      --radius:       16px;
+      --transition:   0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      --grid-gap:     20px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    /* ==========================================
+       SPLASH SCREEN (Abertura)
+    ========================================== */
+    .splash-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: var(--navy);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s;
+    }
+    .splash-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+    .splash-logo {
+      width: clamp(140px, 25vw, 200px);
+      filter: drop-shadow(0 0 30px rgba(79, 156, 249, 0.25));
+      animation: splash-reveal 1.5s forwards ease-out;
+      opacity: 0;
+    }
+    .splash-loader {
+      width: 60px;
+      height: 2px;
+      background: rgba(79, 156, 249, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+    }
+    .splash-loader::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--sky);
+      animation: loader-slide 1.5s infinite ease-in-out;
+    }
+    @keyframes splash-reveal {
+      0% { opacity: 0; transform: scale(0.85) translateY(20px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    @keyframes loader-slide {
+      0% { left: -100%; }
+      50% { left: 0%; }
+      100% { left: 100%; }
+    }
+    .splash-hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+    body.no-scroll { overflow: hidden; }
+
+    body {
+      background-color: var(--navy);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-weight: 300;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ==========================================
+       BACKGROUND TEXTURE
+    ========================================== */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(26,74,138,0.25) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 80%, rgba(37,99,200,0.15) 0%, transparent 55%),
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 59px,
+          rgba(79,156,249,0.03) 59px,
+          rgba(79,156,249,0.03) 60px
+        );
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    main, header, footer, section { position: relative; z-index: 1; }
+
+    /* ==========================================
+       HEADER
+    ========================================== */
+    header {
+      background: linear-gradient(180deg, rgba(10,22,40,0.98) 0%, rgba(10,22,40,0.92) 100%);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo-wrap img {
+      height: 48px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo-text strong {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--white);
+      line-height: 1;
+    }
+
+    .logo-text span {
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sky);
+      margin-top: 2px;
+    }
+
+    .header-contact {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .header-contact a {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.82rem;
+      color: var(--off-white);
+      transition: color var(--transition);
+      font-weight: 500;
+    }
+
+    .header-contact a:hover { color: var(--sky); }
+    .header-contact i { color: var(--sky); font-size: 0.9rem; }
+
+    /* ==========================================
+       LANGUAGE SWITCHER
+    ========================================== */
+    .lang-switcher {
+      display: flex;
+      gap: 12px;
+      margin-right: 20px;
+    }
+    .lang-btn {
+      width: 24px;
+      height: 18px;
+      cursor: pointer;
+      transition: transform 0.2s, filter 0.2s;
+      border-radius: 2px;
+      object-fit: cover;
+    }
+    .lang-btn:hover { transform: scale(1.2); filter: brightness(1.2); }
+
+    /* ==========================================
+       HEADER RESPONSIVENESS
+    ========================================== */
+    @media (max-width: 600px) {
+      header { padding: 10px 16px; }
+      .header-inner { gap: 8px; }
+      .logo-wrap { gap: 8px; }
+      .logo-wrap img { height: 38px; }
+      .logo-text strong { font-size: 1.1rem; }
+      .logo-text span { font-size: 0.55rem; letter-spacing: 0.1em; }
+      
+      .header-contact { gap: 8px; }
+      .lang-switcher { margin-right: 4px; gap: 8px; }
+      .lang-btn { width: 20px; height: 15px; }
+      
+      /* Transforma o link de contato em um botão circular no mobile */
+      .header-contact a span { display: none; } 
+      .header-contact a {
+        background: rgba(79, 156, 249, 0.12);
+        border: 1px solid var(--border);
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        justify-content: center;
+        padding: 0;
+      }
+      .header-contact i { font-size: 1.05rem; margin: 0; }
+    }
+
+    /* ==========================================
+       SEARCH BAR
+    ========================================== */
+    .search-container {
+      max-width: 500px;
+      margin: 30px auto;
+      padding: 0 20px;
+      position: relative;
+      z-index: 95;
+    }
+    .search-input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .search-input-wrapper i {
+      position: absolute;
+      left: 20px;
+      color: var(--sky);
+      font-size: 1rem;
+    }
+    .search-input {
+      width: 100%;
+      background: var(--navy-mid);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 14px 20px 14px 50px;
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      transition: all var(--transition);
+      outline: none;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    .search-input:focus { border-color: var(--sky); box-shadow: 0 0 20px rgba(79, 156, 249, 0.3); }
+    .no-results { text-align: center; padding: 60px 20px; display: none; color: var(--off-white); font-size: 1.1rem; font-family: var(--font-display); }
+
+    /* ==========================================
+       INTRO STRIP
+    ========================================== */
+    .intro {
+      padding: 48px 0 0;
+      max-width: 100%;
+      background: linear-gradient(90deg, rgba(15, 32, 68, 0.2) 0%, rgba(37, 99, 200, 0.5) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .intro-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .intro-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .intro-tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--border-gold);
+      border-radius: 100px;
+      padding: 5px 16px;
+      margin-bottom: 16px;
+    }
+
+    .intro h1 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 300;
+      line-height: 1.15;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+
+    .intro h1 em {
+      font-style: italic;
+      color: var(--sky);
+    }
+
+    .intro p {
+      font-size: 0.9rem;
+      color: var(--off-white);
+      max-width: 480px;
+    }
+
+    .intro-video {
+      flex: 0 0 400px;
+      width: 400px;
+      display: block; /* Garante que o vídeo seja exibido por padrão */
+    }
+    .video-frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: linear-gradient(135deg, var(--navy-light), var(--ocean));
+      box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+    }
+    .video-frame video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    @media (max-width: 900px) {
+      .intro-inner {
+        flex-direction: column-reverse;
+        gap: 20px;
+      }
+      .intro-video {
+        flex: 0 0 auto;
+        width: 100%;
+      }
+      .intro h1,
+      .intro p {
+        text-align: center;
+      }
+      .intro p { max-width: 100%; }
+      .intro-tag { display: block; text-align: center; margin: 0 auto 16px auto; width: max-content; }
+    }
+
+    /* ==========================================
+       HERO ENTRANCE ANIMATIONS
+    ========================================== */
+    @keyframes heroSlideInLeft {
+      0% {
+        opacity: 0;
+        transform: translateX(-60px);
+        filter: blur(12px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+        filter: blur(0);
+      }
+    }
+
+    @keyframes heroSlideInRight {
+      0% {
+        opacity: 0;
+        transform: translateX(60px);
+        filter: blur(12px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+        filter: blur(0);
+      }
+    }
+
+    .intro-text, .intro-video {
+      opacity: 0; /* Estado inicial invisível */
+    }
+
+    .hero-animate .intro-text {
+      animation: heroSlideInLeft 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+
+    .hero-animate .intro-video {
+      animation: heroSlideInRight 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s forwards;
+    }
+
+    .wave-divider {
+      width: 100%;
+      height: 60px;
+      line-height: 0;
+      margin-top: 32px;
+    }
+
+    .waves {
+      position: relative;
+      width: 100%;
+      height: 60px;
+    }
+
+    .parallax > use {
+      animation: move-forever 25s cubic-bezier(.55,.5,.45,.5) infinite;
+    }
+    .parallax > use:nth-child(1) { animation-delay: -2s; animation-duration: 7s; }
+    .parallax > use:nth-child(2) { animation-delay: -3s; animation-duration: 10s; }
+    .parallax > use:nth-child(3) { animation-delay: -4s; animation-duration: 13s; }
+    .parallax > use:nth-child(4) { animation-delay: -5s; animation-duration: 20s; }
+
+    @keyframes move-forever {
+      0% { transform: translate3d(-90px,0,0); }
+      100% { transform: translate3d(85px,0,0); }
+    }
+
+    /* ==========================================
+       CATEGORY NAV
+    ========================================== */
+    .cat-nav {
+      position: sticky;
+      top: 77px; /* Abaixo do header */
+      z-index: 90;
+      background: rgba(10,22,40,0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    .cat-nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      justify-content: center;
+      scrollbar-width: none;
+      padding: 12px 0;
+    }
+
+    .cat-nav-inner::-webkit-scrollbar { display: none; }
+
+    .cat-btn {
+      flex-shrink: 0;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--off-white);
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 8px 20px;
+      border-radius: 100px;
+      cursor: pointer;
+      transition: all var(--transition);
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .cat-btn:hover,
+    .cat-btn.active {
+      background: var(--sky);
+      border-color: var(--sky);
+      color: var(--navy);
+    }
+
+    /* ==========================================
+       MENU SECTIONS
+    ========================================== */
+    .menu-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 24px 20px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .section-header::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--border) 0%, transparent 100%);
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--white);
+      white-space: nowrap;
+    }
+
+    .section-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--sky), var(--blue));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+      color: var(--navy);
+    }
+
+    /* ==========================================
+       MENU CARDS GRID (DESKTOP)
+    ========================================== */
+    .menu-grid {
+      display: flex;
+      gap: var(--grid-gap);
+      width: 100%;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      scroll-snap-type: x mandatory;
+      padding: 40px 0; /* Padding vertical para sombras e hover */
+      margin: 0;
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE/Edge */
+      align-items: stretch; /* Garante que todos os cards na linha tenham a mesma altura */
+    }
+
+    .menu-grid::-webkit-scrollbar {
+      display: none; /* Chrome/Safari */
+    }
+
+    .carousel-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      padding: 0 60px; /* Margem de segurança para as setas laterais */
+    }
+
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 44px;
+      height: 44px;
+      background: var(--navy-mid);
+      border: 1px solid var(--border);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 20;
+      transition: var(--transition);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    }
+
+    .carousel-btn:hover {
+      background: var(--sky);
+      color: var(--navy);
+      border-color: var(--sky);
+    }
+
+    .prev-btn { left: 5px; }
+    .next-btn { right: 5px; }
+
+    .menu-card {
+      flex: 0 0 calc((100% - (var(--grid-gap) * 2)) / 3); /* Cálculo para 3 cards exatos */
+      scroll-snap-align: start;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .menu-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(79,156,249,0.3);
+      border-color: rgba(79,156,249,0.35);
+      z-index: 10; /* Garante que o card "saltado" fique sobre os outros */
+    }
+
+    .card-img {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      background: linear-gradient(135deg, var(--navy-light) 0%, var(--ocean) 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+
+    .card-img::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(45deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 20px);
+      border-radius: inherit;
+    }
+
+    .card-img i { font-size: 2rem; color: rgba(184,212,245,0.2); }
+
+    .card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      transition: transform 0.6s ease;
+    }
+
+    .card-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transform: scale(1);
+      transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 5;
+      pointer-events: none;
+      border-radius: var(--radius);
+      box-shadow: 0 10px 30px rgba(0,0,0,0);
+    }
+
+    .menu-card:hover .card-video,
+    .menu-card:active .card-video {
+      opacity: 1;
+      transform: scale(1.15) translateY(-15px); /* Efeito de saltar para fora e para cima do card */
+      box-shadow: 0 30px 60px rgba(0,0,0,0.7);
+    }
+
+    .menu-card:hover .card-img img,
+    .menu-card:active .card-img img {
+      transform: scale(1.1);
+    }
+
+    .menu-card:hover .card-video ~ img {
+      filter: blur(2px);
+    }
+
+    .card-body {
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      flex: 1; /* Faz o corpo ocupar todo o espaço restante do card */
+      min-height: 160px; /* Padroniza altura mínima para evitar desalinhamento entre seções */
+    }
+
+    .card-header-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 6px;
+    }
+
+    .card-name {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.2;
+    }
+
+    .card-badge {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--navy);
+      background: var(--sky);
+      padding: 2px 8px;
+      border-radius: 4px;
+      flex-shrink: 0;
+      margin-left: 8px;
+    }
+
+    .card-desc {
+      font-size: 0.85rem;
+      color: var(--off-white);
+      opacity: 0.8;
+      margin-bottom: 16px;
+      line-height: 1.4;
+      flex: 1;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding-top: 12px;
+    }
+
+    .card-price {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--gold-light);
+    }
+
+    .add-btn {
+      background: rgba(79,156,249,0.1);
+      border: 1px solid rgba(79,156,249,0.3);
+      color: var(--sky);
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .add-btn:hover {
+      background: var(--sky);
+      color: var(--navy);
+      transform: scale(1.05);
+    }
+
+    /* ==========================================
+       MENU CARDS (MOBILE LIST VIEW - CRO UX)
+    ========================================== */
+    @media (max-width: 1024px) {
+      .carousel-wrapper { padding: 0 50px; }
+      .menu-card {
+        flex: 0 0 calc((100% - var(--grid-gap)) / 2); /* 2 cards no tablet */
+      }
+    }
+
+    @media (max-width: 768px) {
+      .menu-section { padding: 20px 15px; }
+      .carousel-wrapper { padding: 0 45px; }
+      .menu-card { flex: 0 0 100%; } /* 1 card inteiro no mobile */
+      .carousel-btn { width: 36px; height: 36px; font-size: 0.8rem; }
+      .card-body { min-height: auto; }
+    }
+
+    /* ==========================================
+       FLOATING ACTIONS (CART & WHATSAPP)
+    ========================================== */
+    .float-container {
+      position: fixed;
+      bottom: 24px;
+      width: 100%;
+      max-width: 1200px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 200;
+      pointer-events: none; /* Deixa clicar apenas nos botões internos */
+    }
+
+    .float-btn {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      color: #fff;
+      cursor: pointer;
+      pointer-events: auto;
+      transition: transform var(--transition), box-shadow var(--transition);
+      position: relative;
+    }
+
+    .cart-float {
+      background: var(--ocean);
+      border: 2px solid var(--sky);
+      box-shadow: 0 6px 20px rgba(10,22,40,0.6);
+    }
+    .cart-float:hover { transform: scale(1.08); background: var(--blue); }
+
+    .cart-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: var(--gold);
+      color: var(--navy);
+      font-size: 0.8rem;
+      font-weight: 600;
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-family: var(--font-body);
+      opacity: 0;
+      transform: scale(0);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .cart-badge.active {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .whatsapp-float {
+      background: #25d366;
+      box-shadow: 0 6px 24px rgba(37,211,102,0.45);
+      animation: pulse-wa 2.5s infinite;
+    }
+    .whatsapp-float:hover { transform: scale(1.1); animation: none; }
+
+    @keyframes pulse-wa {
+      0%, 100% { box-shadow: 0 6px 24px rgba(37,211,102,0.45); }
+      50%       { box-shadow: 0 6px 36px rgba(37,211,102,0.7); }
+    }
+
+    /* TOAST NOTIFICATION */
+    #toast {
+      position: fixed;
+      bottom: -80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--white);
+      color: var(--navy);
+      padding: 12px 24px;
+      border-radius: 100px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      z-index: 300;
+      transition: bottom 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    #toast i { color: var(--blue); }
+    #toast.show { bottom: 100px; }
+
+    /* ==========================================
+       SCROLL REVEAL
+    ========================================== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-d1 { transition-delay: 0.1s; }
+    .reveal-d2 { transition-delay: 0.2s; }
+    
+    /* ==========================================
+       FOOTER MODERNO
+    ========================================== */
+    footer {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 12% 10%, rgba(79,156,249,0.16), transparent 34%),
+        radial-gradient(circle at 88% 18%, rgba(212,168,67,0.10), transparent 30%),
+        linear-gradient(180deg, rgba(10,22,40,0.98) 0%, rgba(5,14,28,1) 100%);
+      border-top: 1px solid var(--border);
+      padding: 64px 24px 92px;
+      text-align: left;
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: min(1120px, calc(100% - 48px));
+      height: 1px;
+      transform: translateX(-50%);
+      background: linear-gradient(90deg, transparent, rgba(240,201,106,0.75), transparent);
+    }
+
+    .footer-inner {
+      width: min(1120px, 100%);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.35fr 0.8fr 1fr 0.9fr;
+      gap: 34px;
+      align-items: start;
+    }
+
+    .footer-brand {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .footer-brand .logo-wrap {
+      align-items: center;
+    }
+
+    .footer-brand .logo-wrap img {
+      height: 48px;
+      width: auto;
+    }
+
+    .footer-brand p {
+      max-width: 340px;
+      color: var(--off-white);
+      opacity: 0.82;
+      font-size: 0.92rem;
+      line-height: 1.65;
+    }
+
+    .social-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .social-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(79,156,249,0.08);
+      border: 1px solid rgba(79,156,249,0.22);
+      color: var(--foam);
+      font-size: 1.05rem;
+      transition: transform var(--transition), background var(--transition), color var(--transition), border-color var(--transition);
+    }
+
+    .social-btn:hover {
+      transform: translateY(-3px);
+      background: var(--sky);
+      border-color: var(--sky);
+      color: var(--navy);
+    }
+
+    .footer-col h4 {
+      color: var(--white);
+      font-family: var(--font-display);
+      font-size: 1.22rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      letter-spacing: 0.03em;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .footer-col li,
+    .footer-col a,
+    .footer-col span {
+      color: var(--off-white);
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+
+    .footer-col li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      opacity: 0.86;
+    }
+
+    .footer-col i {
+      width: 18px;
+      margin-top: 3px;
+      color: var(--gold-light);
+      flex-shrink: 0;
+    }
+
+    .footer-col a {
+      transition: color var(--transition), padding-left var(--transition);
+    }
+
+    .footer-col a:hover {
+      color: var(--sky);
+      padding-left: 4px;
+    }
+
+    .footer-bottom {
+      width: min(1120px, 100%);
+      margin: 38px auto 0;
+      padding-top: 22px;
+      border-top: 1px solid rgba(79,156,249,0.14);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      color: rgba(200,218,240,0.68);
+      font-size: 0.78rem;
+    }
+
+    @media (max-width: 980px) {
+      .footer-inner {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .footer-brand {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media (max-width: 620px) {
+      footer {
+        padding: 48px 18px 96px;
+      }
+
+      .footer-inner {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+
+      .footer-brand,
+      .footer-col {
+        text-align: center;
+        align-items: center;
+      }
+
+      .footer-brand .logo-wrap,
+      .social-row,
+      .footer-col li {
+        justify-content: center;
+      }
+
+      .footer-brand p {
+        margin: 0 auto;
+      }
+
+      .footer-col li {
+        align-items: center;
+      }
+
+      .footer-col i {
+        margin-top: 0;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+
+    /* ==========================================
+       MODAL SELECTION (BEERS)
+    ========================================== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 22, 40, 0.85);
+      backdrop-filter: blur(12px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--transition);
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-content {
+      background: var(--navy-mid);
+      background-image: radial-gradient(circle at top right, rgba(79, 156, 249, 0.12), transparent);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      width: 100%;
+      max-width: 480px;
+      padding: 40px;
+      position: relative;
+      transform: scale(0.9) translateY(20px);
+      transition: transform var(--transition), opacity var(--transition);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+    }
+
+    .modal-overlay.active .modal-content {
+      transform: scale(1) translateY(0);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      color: var(--white);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .modal-close:hover {
+      background: var(--sky);
+      color: var(--navy);
+    }
+
+    .modal-title {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 28px;
+      text-align: center;
+    }
+
+    .modal-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .modal-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      background: rgba(22, 45, 92, 0.4);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      transition: all var(--transition);
+    }
+
+    .modal-item:hover {
+      background: rgba(37, 99, 200, 0.15);
+      border-color: var(--sky);
+      transform: translateX(4px);
+    }
+
+    .modal-item-info h5 {
+      font-size: 1.1rem;
+      color: var(--white);
+      margin-bottom: 2px;
+    }
+
+    .modal-item-info span {
+      font-size: 0.8rem;
+      color: var(--sky);
+      font-weight: 500;
+    }
+
+    .modal-item-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .modal-item-price {
+      font-family: var(--font-display);
+      font-weight: 600;
+      color: var(--gold-light);
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+<body class="no-scroll">
+
+  <!-- SPLASH SCREEN -->
+  <div id="splash" class="splash-screen">
+    <div class="splash-content">
+      <img src="img/logo.png" alt="Caravela" class="splash-logo">
+      <div class="splash-loader"></div>
+    </div>
+  </div>
+
+  <header>
+    <div class="header-inner">
+      <div class="logo-wrap">
+        <img src="img/logo.png" alt="Logo Caravela Restaurante" />
+        <div class="logo-text">
+          <strong>Caravela</strong>
+          <span data-i18n="header-subtitle">Menu Digital</span>
+        </div>
+      </div>
+      <div class="header-contact">
+        <div class="lang-switcher">
+          <img src="https://flagcdn.com/w40/br.png" class="lang-btn" onclick="setLanguage('pt')" alt="Português" title="Português">
+          <img src="https://flagcdn.com/w40/us.png" class="lang-btn" onclick="setLanguage('en')" alt="English" title="English">
+          <img src="https://flagcdn.com/w40/es.png" class="lang-btn" onclick="setLanguage('es')" alt="Español" title="Español">
+        </div>
+        <a href="https://wa.me/+5512982020022" target="_blank" rel="noopener">
+          <i class="fa-brands fa-whatsapp"></i>
+          <span data-i18n="header-contact">Fale conosco</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <section class="intro">
+    <div class="intro-inner">
+      <div class="intro-text">
+        <span class="intro-tag"><i class="fa-solid fa-anchor" style="margin-right:6px;font-size:0.65em"></i> <span data-i18n="intro-tag">Bem-vindo à bordo</span></span>
+        <h1 data-i18n="intro-title">Sabores do <em>Oceano</em>,<br>à sua mesa</h1>
+        <p data-i18n="intro-desc">Explore nossas opções de frutos do mar frescos e adicione ao seu pedido.</p>
+      </div>
+      <div class="intro-video">
+        <div class="video-frame">
+          <video src="vid/restaurante.mp4" loop muted autoplay playsinline>
+            Seu navegador não suporta o elemento de vídeo.
+          </video>
+          <!-- O placeholder de vídeo foi removido, pois o vídeo agora é carregado diretamente. -->
+        </div>
+      </div>
+    </div>
+    <div class="wave-divider">
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+      viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(79,156,249,0.05)" />
+          <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(79,156,249,0.1)" />
+          <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(212, 168, 67, 0.05)" />
+          <use xlink:href="#gentle-wave" x="48" y="7" fill="var(--navy)" />
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <div class="search-container reveal">
+    <div class="search-input-wrapper">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" class="search-input" id="menuSearch" oninput="handleSearch(this.value)" data-i18n-placeholder="search-placeholder" placeholder="Buscar no cardápio...">
+    </div>
+  </div>
+
+  <div id="no-results" class="no-results" data-i18n="no-results">Nenhum prato encontrado.</div>
+
+  <nav class="cat-nav">
+    <div class="cat-nav-inner">
+      <button class="cat-btn active" onclick="scrollToSection('entradas')" data-i18n="nav-entradas">🦐 Entradas</button>
+      <button class="cat-btn" onclick="scrollToSection('principais')" data-i18n="nav-principais">🦞 Principais</button>
+      <button class="cat-btn" onclick="scrollToSection('drinks')" data-i18n="nav-drinks">🍹 Drinks</button>
+      <button class="cat-btn" onclick="scrollToSection('bebidas')" data-i18n="nav-bebidas">🍺 Bebidas</button>
+    </div>
+  </nav>
+
+  <main>
+    <section class="menu-section" id="entradas">
+      <div class="section-header reveal">
+        <div class="section-icon"><i class="fa-solid fa-shrimp"></i></div>
+        <h2 class="section-title" data-i18n="title-entradas">Entradas</h2>
+      </div>
+
+      <div class="carousel-wrapper">
+        <button class="carousel-btn prev-btn" onclick="slide(this, -1)"><i class="fa-solid fa-chevron-left"></i></button>
+      <div class="menu-grid">
+        <div class="menu-card reveal reveal-d1">
+          <div class="card-img">
+            <video src="vid/casquinha-de-siri.mp4" class="card-video" loop muted playsinline></video>
+            <img src="img/casquinha-de-siri.jpg" alt="Casquinha de Siri">
+          </div>
+          <div class="card-body">
+            <div>
+              <div class="card-header-info">
+                <h3 class="card-name" data-i18n="item-siri-name">Casquinha de Siri</h3>
+                <span class="card-badge" data-i18n="badge-new">Novo</span>
+              </div>
+              <p class="card-desc" data-i18n="item-siri-desc">Carne de siri pura, gratinada com parmesão e farofa de panko.</p>
+            </div>
+            <div class="card-footer">
+              <span class="card-price">38,00</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-card reveal reveal-d2">
+          <div class="card-img">
+            <video src="vid/ceviche-classico.mp4" class="card-video" loop muted playsinline></video>
+            <img src="img/ceviche-classico.jpg" alt="Ceviche Clássico">
+          </div>
+          <div class="card-body">
+            <div>
+              <div class="card-header-info">
+                <h3 class="card-name" data-i18n="item-ceviche-name">Ceviche Clássico</h3>
+              </div>
+              <p class="card-desc" data-i18n="item-ceviche-desc">Peixe branco fresco marinando no limão siciliano, cebola roxa e pimenta biquinho.</p>
+            </div>
+            <div class="card-footer">
+              <span class="card-price">45,00</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-card reveal reveal-d1">
+          <div class="card-img">
+            <video src="vid/lula-crocante.mp4" class="card-video" loop muted playsinline></video>
+            <img src="img/lula-crocante.jpg" alt="Lula Crocante">
+          </div>
+          <div class="card-body">
+            <div>
+              <div class="card-header-info">
+                <h3 class="card-name" data-i18n="item-lula-name">Lula Crocante</h3>
+              </div>
+              <p class="card-desc" data-i18n="item-lula-desc">Anéis de lula empanados, acompanhados de maionese de alho confit.</p>
+            </div>
+            <div class="card-footer">
+              <span class="card-price">52,00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+        <button class="carousel-btn next-btn" onclick="slide(this, 1)"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+    </section>
+
+    <section class="menu-section" id="principais">
+      <div class="section-header reveal">
+        <div class="section-icon"><i class="fa-solid fa-fish"></i></div>
+        <h2 class="section-title" data-i18n="title-principais">Pratos Principais</h2>
+      </div>
+
+      <div class="carousel-wrapper">
+        <button class="carousel-btn prev-btn" onclick="slide(this, -1)"><i class="fa-solid fa-chevron-left"></i></button>
+      <div class="menu-grid">
+        <div class="menu-card reveal reveal-d1">
+          <div class="card-img">
+            <video src="vid/moqueca-baiana.mp4" class="card-video" loop muted playsinline></video>
+            <img src="img/moqueca-baiana.jpg" alt="Moqueca Baiana">
+          </div>
+          <div class="card-body">
+            <div>
+              <div class="card-header-info">
+                <h3 class="card-name" data-i18n="item-moqueca-name">Moqueca Baiana</h3>
+                <span class="card-badge">Chef</span>
+              </div>
+              <p class="card-desc" data-i18n="item-moqueca-desc">Postas de robalo e camarões G no azeite de dendê. Acompanha arroz e pirão.</p>
+            </div>
+            <div class="card-footer">
+              <span class="card-price">180,00</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-card reveal reveal-d2">
+          <div class="card-img">
+            <video src="vid/polvo-na-brasa.mp4" class="card-video" loop muted playsinline></video>
+            <img src="img/polvo-na-brasa.jpg" alt="Polvo na Brasa">
+          </div>
+          <div class="card-body">
+            <div>
+              <div class="card-header-info">
+                <h3 class="card-name" data-i18n="item-polvo-name">Polvo na Brasa</h3>
+              </div>
+              <p class="card-desc" data-i18n="item-polvo-desc">Tentáculos macios grelhados com batatas ao murro e alho assado.</p>
+            </div>
+            <div class="card-footer">
+              <span class="card-price">145,00</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-card reveal reveal-d1">
+          <div class="card-img">
+            <video src="vid/risoto-dos-mares.mp4" class="card-video" loop muted playsinline></video>
+            <img src="img/risoto-dos-mares.jpg" alt="Risoto dos Mares">
+          </div>
+          <div class="card-body">
+            <div>
+              <div class="card-header-info">
+                <h3 class="card-name" data-i18n="item-risoto-name">Risoto dos Mares</h3>
+              </div>
+              <p class="card-desc" data-i18n="item-risoto-desc">Arroz arbório cremoso finalizado com lula, mexilhões e camarões médios.</p>
+            </div>
+            <div class="card-footer">
+              <span class="card-price">95,00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+        <button class="carousel-btn next-btn" onclick="slide(this, 1)"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+    </section>
+
+    <section class="menu-section" id="drinks">
+      <div class="section-header reveal">
+        <div class="section-icon"><i class="fa-solid fa-martini-glass"></i></div>
+        <h2 class="section-title" data-i18n="title-drinks">Drinks</h2>
+      </div>
+
+      <div class="carousel-wrapper">
+        <button class="carousel-btn prev-btn" onclick="slide(this, -1)"><i class="fa-solid fa-chevron-left"></i></button>
+      <div class="menu-grid">
+        <div class="menu-card reveal reveal-d1">
+          <div class="card-img">
+            <video src="vid/gin-tropical.mp4" class="card-video" loop muted playsinline></video>
+            <img src="img/gin-tropical.jpg" alt="Gin Tropical">
+          </div>
+          <div class="card-body">
+            <div>
+              <div class="card-header-info">
+                <h3 class="card-name" data-i18n="item-gin-name">Gin Tropical</h3>
+              </div>
+              <p class="card-desc" data-i18n="item-gin-desc">Gin, tônica, laranja, maracujá e ramo de alecrim fresco.</p>
+            </div>
+            <div class="card-footer">
+              <span class="card-price">32,00</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-card reveal reveal-d2">
+          <div class="card-img">
+            <video src="vid/caipirinha.mp4" class="card-video" loop muted playsinline></video>
+            <img src="img/caipirinha.jpg" alt="Caipirinha Clássica">
+          </div>
+          <div class="card-body">
+            <div>
+              <div class="card-header-info">
+                <h3 class="card-name" data-i18n="item-caipira-name">Caipirinha Clássica</h3>
+              </div>
+              <p class="card-desc" data-i18n="item-caipira-desc">Cachaça artesanal, limão taiti, gelo e açúcar.</p>
+            </div>
+            <div class="card-footer">
+              <span class="card-price">22,00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+        <button class="carousel-btn next-btn" onclick="slide(this, 1)"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+    </section>
+
+    <section class="menu-section" id="bebidas">
+      <div class="section-header reveal">
+        <div class="section-icon"><i class="fa-solid fa-beer-mug-empty"></i></div>
+        <h2 class="section-title" data-i18n="title-bebidas">Bebidas</h2>
+      </div>
+
+      <div class="carousel-wrapper">
+        <button class="carousel-btn prev-btn" onclick="slide(this, -1)"><i class="fa-solid fa-chevron-left"></i></button>
+      <div class="menu-grid">
+        <div class="menu-card reveal reveal-d1">
+          <div class="card-img">
+            <img src="img/cervejas.jpg" alt="Cervejas">
+          </div>
+          <div class="card-body">
+            <div>
+              <div class="card-header-info">
+                <h3 class="card-name" data-i18n="item-beer-name">Cervejas</h3>
+              </div>
+              <p class="card-desc" data-i18n="item-beer-desc">Seleção de 600mL e Long Necks</p>
+            </div>
+            <div class="card-footer">
+              <span class="card-price">12,00</span>
+              <button class="add-btn" onclick="openModal('beerModal')" title="Ver opções"><i class="fa-solid fa-list-ul"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-card reveal reveal-d2">
+          <div class="card-img">
+            <img src="img/refrigerantes.jpg" alt="Refrigerantes">
+          </div>
+          <div class="card-body">
+            <div>
+              <div class="card-header-info">
+                <h3 class="card-name" data-i18n="item-soda-name">Refrigerantes</h3>
+              </div>
+              <p class="card-desc" data-i18n="item-soda-desc">Lata 350ml: Coca-Cola (Original e Zero), Guaraná Antarctica e Sprite.</p>
+            </div>
+            <div class="card-footer">
+              <span class="card-price">8,00</span>
+              <button class="add-btn" onclick="openModal('sodaModal')" title="Ver opções"><i class="fa-solid fa-list-ul"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-card reveal reveal-d1">
+          <div class="card-img">
+            <img src="img/aguas.jpg" alt="Águas">
+          </div>
+          <div class="card-body">
+            <div>
+              <div class="card-header-info">
+                <h3 class="card-name" data-i18n="item-water-name">Águas</h3>
+              </div>
+              <p class="card-desc" data-i18n="item-water-desc">Água mineral 500ml, disponível nas versões com e sem gás.</p>
+            </div>
+            <div class="card-footer">
+              <span class="card-price">6,00</span>
+              <button class="add-btn" onclick="openModal('waterModal')" title="Ver opções"><i class="fa-solid fa-list-ul"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-card reveal reveal-d2">
+          <div class="card-img">
+            <img src="img/sem-alcool.jpg" alt="Sem álcool">
+          </div>
+          <div class="card-body">
+            <div>
+              <div class="card-header-info">
+                <h3 class="card-name" data-i18n="item-noalc-name">Sem álcool</h3>
+              </div>
+              <p class="card-desc" data-i18n="item-noalc-desc">Sucos naturais de fruta, Chás gelados da casa e Mocktails especiais.</p>
+            </div>
+            <div class="card-footer">
+              <span class="card-price">15,00</span>
+              <button class="add-btn" onclick="openModal('nonAlcModal')" title="Ver opções"><i class="fa-solid fa-list-ul"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+        <button class="carousel-btn next-btn" onclick="slide(this, 1)"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer>
+    <div class="footer-inner">
+
+      <div class="footer-brand">
+        <div class="logo-wrap">
+          <img src="img/logo.png" alt="Logo Caravela Restaurante" />
+          <div class="logo-text">
+            <strong>Caravela</strong>
+            <span data-i18n="footer-brand-subtitle">Frutos do Mar</span>
+          </div>
+        </div>
+        <p data-i18n="footer-brand-desc">Menu digital do Caravela: frutos do mar, bebidas especiais e uma experiência gastronômica com o frescor do oceano.</p>
+        <div class="social-row" aria-label="Redes sociais">
+          <a href="#" class="social-btn" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="social-btn" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" class="social-btn" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+          <a href="#" class="social-btn" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4 data-i18n="footer-title-menu">Cardápio</h4>
+        <ul>
+          <li><i class="fa-solid fa-shrimp"></i><a href="#entradas" data-i18n="footer-link-entradas">Entradas</a></li>
+          <li><i class="fa-solid fa-fish"></i><a href="#principais" data-i18n="footer-link-principais">Pratos Principais</a></li>
+          <li><i class="fa-solid fa-martini-glass"></i><a href="#drinks" data-i18n="footer-link-drinks">Drinks</a></li>
+          <li><i class="fa-solid fa-beer-mug-empty"></i><a href="#bebidas" data-i18n="footer-link-bebidas">Bebidas</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4 data-i18n="footer-title-contact">Contato</h4>
+        <ul>
+          <li><i class="fa-solid fa-phone"></i><a href="tel:+5512982020022">(12) 98202-0022</a></li>
+          <li><i class="fa-brands fa-whatsapp"></i><a href="https://wa.me/+5512982020022" target="_blank" rel="noopener" data-i18n="footer-link-wa">Chamar no WhatsApp</a></li>
+          <li><i class="fa-solid fa-location-dot"></i><span data-i18n="footer-address">Rua das Palmeiras, 299<br>Guadalupe</span></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4 data-i18n="footer-title-hours">Funcionamento</h4>
+        <ul>
+          <li><i class="fa-regular fa-clock"></i><span data-i18n="footer-hours-week">Segunda a Sexta<br>12h às 23h</span></li>
+          <li><i class="fa-regular fa-calendar-days"></i><span data-i18n="footer-hours-weekend">Sábados e Domingos<br>11h às 00h</span></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <span data-i18n="footer-copy">© 2026 Caravela – Restaurante de Frutos do Mar. Todos os direitos reservados.</span>
+      <span data-i18n="footer-dev">Desenvolvido para uma experiência de menu digital moderna.</span>
+    </div>
+  </footer>
+
+  <div class="float-container">
+    <a href="https://wa.me/+5512982020022" target="_blank" rel="noopener" class="float-btn whatsapp-float">
+      <i class="fa-brands fa-whatsapp"></i>
+    </a>
+  </div>
+
+  <!-- Modal de Cervejas -->
+  <div class="modal-overlay" id="beerModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('beerModal')"><i class="fa-solid fa-xmark"></i></button>
+      <h3 class="modal-title" data-i18n="modal-beer-title">Cervejas</h3>
+      <ul class="modal-list">
+        <li class="modal-item">
+          <div class="modal-item-info">
+            <h5>Heineken</h5>
+            <span data-i18n="modal-beer-ln">Long Neck 330ml</span>
+          </div>
+          <div class="modal-item-right">
+            <span class="modal-item-price">14,00</span>
+          </div>
+        </li>
+        <li class="modal-item">
+          <div class="modal-item-info">
+            <h5>Stella Artois</h5>
+            <span data-i18n="modal-beer-ln">Long Neck 330ml</span>
+          </div>
+          <div class="modal-item-right">
+            <span class="modal-item-price">14,00</span>
+          </div>
+        </li>
+        <li class="modal-item">
+          <div class="modal-item-info">
+            <h5>Eisenbahn</h5>
+            <span data-i18n="modal-beer-bt">Garrafa 600ml</span>
+          </div>
+          <div class="modal-item-right">
+            <span class="modal-item-price">18,00</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Modal de Refrigerantes -->
+  <div class="modal-overlay" id="sodaModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('sodaModal')"><i class="fa-solid fa-xmark"></i></button>
+      <h3 class="modal-title" data-i18n="modal-soda-title">Refrigerantes</h3>
+      <ul class="modal-list">
+        <li class="modal-item">
+          <div class="modal-item-info"><h5>Coca-Cola</h5><span data-i18n="modal-soda-can">Lata 350ml</span></div>
+          <div class="modal-item-right">
+            <span class="modal-item-price">8,00</span>
+          </div>
+        </li>
+        <li class="modal-item">
+          <div class="modal-item-info"><h5>Coca-Cola Zero</h5><span data-i18n="modal-soda-can">Lata 350ml</span></div>
+          <div class="modal-item-right">
+            <span class="modal-item-price">8,00</span>
+          </div>
+        </li>
+        <li class="modal-item">
+          <div class="modal-item-info"><h5>Sprite</h5><span data-i18n="modal-soda-can">Lata 350ml</span></div>
+          <div class="modal-item-right">
+            <span class="modal-item-price">8,00</span>
+          </div>
+        </li>
+        <li class="modal-item">
+          <div class="modal-item-info"><h5>Guaraná Antarctica</h5><span data-i18n="modal-soda-can">Lata 350ml</span></div>
+          <div class="modal-item-right">
+            <span class="modal-item-price">8,00</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Modal de Águas -->
+  <div class="modal-overlay" id="waterModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('waterModal')"><i class="fa-solid fa-xmark"></i></button>
+      <h3 class="modal-title" data-i18n="modal-water-title">Águas</h3>
+      <ul class="modal-list">
+        <li class="modal-item">
+          <div class="modal-item-info"><h5 data-i18n="modal-water-still">Água Mineral</h5><span>500ml</span></div>
+          <div class="modal-item-right">
+            <span class="modal-item-price">6,00</span>
+          </div>
+        </li>
+        <li class="modal-item">
+          <div class="modal-item-info"><h5 data-i18n="modal-water-spark">Água com Gás</h5><span>500ml</span></div>
+          <div class="modal-item-right">
+            <span class="modal-item-price">6,00</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Modal de Sem Álcool -->
+  <div class="modal-overlay" id="nonAlcModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('nonAlcModal')"><i class="fa-solid fa-xmark"></i></button>
+      <h3 class="modal-title" data-i18n="modal-noalc-title">Sem álcool</h3>
+      <ul class="modal-list">
+        <li class="modal-item">
+          <div class="modal-item-info"><h5 data-i18n="modal-noalc-juice">Suco de Laranja</h5><span data-i18n="modal-noalc-natural">Natural 400ml</span></div>
+          <div class="modal-item-right">
+            <span class="modal-item-price">15,00</span>
+          </div>
+        </li>
+        <li class="modal-item">
+          <div class="modal-item-info"><h5 data-i18n="modal-noalc-tea">Chá Gelado da Casa</h5><span data-i18n="modal-noalc-flav">Limão e Hortelã</span></div>
+          <div class="modal-item-right">
+            <span class="modal-item-price">15,00</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    /* ---- LOGICA DA ABERTURA (Splash Screen) ---- */
+    window.addEventListener('load', () => {
+      const splash = document.getElementById('splash');
+      setTimeout(() => {
+        splash.classList.add('splash-hidden');
+        document.body.classList.remove('no-scroll');
+        
+        // Inicia a animação da Hero após a saída do Splash Screen
+        const intro = document.querySelector('.intro');
+        if (intro) intro.classList.add('hero-animate');
+      }, 2200); // Tempo da animação de abertura
+    });
+
+    /* ---- INTERNACIONALIZAÇÃO (i18n) ---- */
+    const translations = {
+      pt: {
+        "header-subtitle": "Menu Digital",
+        "header-contact": "Fale conosco",
+        "intro-tag": "Bem-vindo à bordo",
+        "intro-title": "Sabores do <em>Oceano</em>,<br>à sua mesa",
+        "intro-desc": "Explore nossas opções de frutos do mar frescos e adicione ao seu pedido.",
+        "nav-entradas": "🦐 Entradas",
+        "nav-principais": "🦞 Principais",
+        "nav-drinks": "🍹 Drinks",
+        "nav-bebidas": "🍺 Bebidas",
+        "title-entradas": "Entradas",
+        "title-principais": "Pratos Principais",
+        "title-drinks": "Drinks",
+        "title-bebidas": "Bebidas",
+        "badge-new": "Novo",
+        "item-siri-name": "Casquinha de Siri",
+        "item-siri-desc": "Carne de siri pura, gratinada com parmesão e farofa de panko.",
+        "item-ceviche-name": "Ceviche Clássico",
+        "item-ceviche-desc": "Peixe branco fresco marinando no limão siciliano, cebola roxa e pimenta biquinho.",
+        "item-lula-name": "Lula Crocante",
+        "item-lula-desc": "Anéis de lula empanados, acompanhados de maionese de alho confit.",
+        "item-moqueca-name": "Moqueca Baiana",
+        "item-moqueca-desc": "Postas de robalo e camarões G no azeite de dendê. Acompanha arroz e pirão.",
+        "item-polvo-name": "Polvo na Brasa",
+        "item-polvo-desc": "Tentáculos macios grelhados com batatas ao murro e alho assado.",
+        "item-risoto-name": "Risoto dos Mares",
+        "item-risoto-desc": "Arroz arbório cremoso finalizado com lula, mexilhões e camarões médios.",
+        "item-gin-name": "Gin Tropical",
+        "item-gin-desc": "Gin, tônica, laranja, maracujá e ramo de alecrim fresco.",
+        "item-caipira-name": "Caipirinha Clássica",
+        "item-caipira-desc": "Cachaça artesanal, limão taiti, gelo e açúcar.",
+        "item-beer-name": "Cervejas",
+        "item-beer-desc": "Seleção de 600mL e Long Necks",
+        "item-soda-name": "Refrigerantes",
+        "item-soda-desc": "Lata 350ml: Coca-Cola (Original e Zero), Guaraná Antarctica e Sprite.",
+        "item-water-name": "Águas",
+        "item-water-desc": "Água mineral 500ml, disponível nas versões com e sem gás.",
+        "item-noalc-name": "Sem álcool",
+        "item-noalc-desc": "Sucos naturais de fruta, Chás gelados da casa e Mocktails especiais.",
+        "footer-brand-subtitle": "Frutos do Mar",
+        "footer-brand-desc": "Menu digital do Caravela: frutos do mar, bebidas especiais e uma experiência gastronômica com o frescor do oceano.",
+        "footer-title-menu": "Cardápio",
+        "footer-link-entradas": "Entradas",
+        "footer-link-principais": "Pratos Principais",
+        "footer-link-drinks": "Drinks",
+        "footer-link-bebidas": "Bebidas",
+        "footer-title-contact": "Contato",
+        "footer-link-wa": "Chamar no WhatsApp",
+        "footer-address": "Rua das Palmeiras, 299<br>Guadalupe",
+        "footer-title-hours": "Funcionamento",
+        "footer-hours-week": "Segunda a Sexta<br>12h às 23h",
+        "footer-hours-weekend": "Sábados e Domingos<br>11h às 00h",
+        "footer-copy": "© 2026 Caravela – Restaurante de Frutos do Mar. Todos os direitos reservados.",
+        "footer-dev": "Desenvolvido para uma experiência de menu digital moderna.",
+        "search-placeholder": "Buscar no cardápio...",
+        "no-results": "Nenhum prato encontrado.",
+        "modal-beer-title": "Cervejas", "modal-beer-ln": "Long Neck 330ml", "modal-beer-bt": "Garrafa 600ml",
+        "modal-soda-title": "Refrigerantes", "modal-soda-can": "Lata 350ml",
+        "modal-water-title": "Águas", "modal-water-still": "Água Mineral", "modal-water-spark": "Água com Gás",
+        "modal-noalc-title": "Sem álcool", "modal-noalc-juice": "Suco de Laranja", "modal-noalc-natural": "Natural 400ml", "modal-noalc-tea": "Chá Gelado da Casa", "modal-noalc-flav": "Limão e Hortelã"
+      },
+      en: {
+        "header-subtitle": "Digital Menu", "header-contact": "Contact us", "intro-tag": "Welcome aboard",
+        "intro-title": "Ocean <em>Flavors</em>,<br>at your table",
+        "intro-desc": "Explore our fresh seafood options and add them to your order.",
+        "nav-entradas": "🦐 Starters", "nav-principais": "🦞 Main Courses", "nav-drinks": "🍹 Cocktails", "nav-bebidas": "🍺 Beverages",
+        "title-entradas": "Starters", "title-principais": "Main Courses", "title-drinks": "Cocktails", "title-bebidas": "Beverages",
+        "badge-new": "New", "item-siri-name": "Stuffed Crab Shell", "item-siri-desc": "Pure crab meat, au gratin with parmesan and panko crumbs.",
+        "item-ceviche-name": "Classic Ceviche", "item-ceviche-desc": "Fresh white fish marinated in Sicilian lemon, red onion and biquinho pepper.",
+        "item-lula-name": "Crispy Squid", "item-lula-desc": "Breaded squid rings, served with garlic confit mayonnaise.",
+        "item-moqueca-name": "Bahian Moqueca", "item-moqueca-desc": "Sea bass steaks and jumbo shrimp in palm oil. Served with rice and pirão.",
+        "item-polvo-name": "Grilled Octopus", "item-polvo-desc": "Tender grilled tentacles with smashed potatoes and roasted garlic.",
+        "item-risoto-name": "Seafood Risotto", "item-risoto-desc": "Creamy arborio rice finished with squid, mussels and medium shrimp.",
+        "item-gin-name": "Tropical Gin", "item-gin-desc": "Gin, tonic, orange, passion fruit and fresh rosemary sprig.",
+        "item-caipira-name": "Classic Caipirinha", "item-caipira-desc": "Artisanal cachaça, lime, ice and sugar.",
+        "item-beer-name": "Beers", "item-beer-desc": "Selection of 600mL and Long Necks",
+        "item-soda-name": "Soft Drinks", "item-soda-desc": "350ml Can: Coca-Cola (Original & Zero), Guaraná and Sprite.",
+        "item-water-name": "Waters", "item-water-desc": "500ml mineral water, available in still and sparkling versions.",
+        "item-noalc-name": "Non-alcoholic", "item-noalc-desc": "Natural fruit juices, house iced teas and special Mocktails.",
+        "footer-brand-subtitle": "Seafood", "footer-brand-desc": "Caravela's digital menu: seafood, special drinks and a gastronomic experience with ocean freshness.",
+        "footer-title-menu": "Menu", "footer-link-entradas": "Starters", "footer-link-principais": "Main Courses", "footer-link-drinks": "Cocktails", "footer-link-bebidas": "Beverages",
+        "footer-title-contact": "Contact", "footer-link-wa": "Chat on WhatsApp", "footer-address": "Palmeiras St, 299<br>Guadalupe",
+        "footer-title-hours": "Opening Hours", "footer-hours-week": "Mon to Fri<br>12pm to 11pm", "footer-hours-weekend": "Sat and Sun<br>11am to 12am",
+        "footer-copy": "© 2026 Caravela – Seafood Restaurant. All rights reserved.", "footer-dev": "Developed for a modern digital menu experience.",
+        "search-placeholder": "Search menu...",
+        "no-results": "No dishes found.",
+        "modal-beer-title": "Beers", "modal-beer-ln": "Long Neck 11oz", "modal-beer-bt": "20oz Bottle",
+        "modal-soda-title": "Soft Drinks", "modal-soda-can": "350ml Can",
+        "modal-water-title": "Waters", "modal-water-still": "Still Water", "modal-water-spark": "Sparkling Water",
+        "modal-noalc-title": "Non-alcoholic", "modal-noalc-juice": "Orange Juice", "modal-noalc-natural": "Fresh 400ml", "modal-noalc-tea": "House Iced Tea", "modal-noalc-flav": "Lemon & Mint"
+      },
+      es: {
+        "header-subtitle": "Menú Digital", "header-contact": "Contáctenos", "intro-tag": "Bienvenido a bordo",
+        "intro-title": "Sabores del <em>Océano</em>,<br>a su mesa",
+        "intro-desc": "Explore nuestras opciones de mariscos frescos y agréguelos a su pedido.",
+        "nav-entradas": "🦐 Entradas", "nav-principais": "🦞 Principales", "nav-drinks": "🍹 Tragos", "nav-bebidas": "🍺 Bebidas",
+        "title-entradas": "Entradas", "title-principais": "Platos Principales", "title-drinks": "Tragos", "title-bebidas": "Bebidas",
+        "badge-new": "Nuevo", "item-siri-name": "Concha de Cangrejo", "item-siri-desc": "Carne de cangrejo pura, gratinada con parmesano y harina panko.",
+        "item-ceviche-name": "Ceviche Clásico", "item-ceviche-desc": "Pescado blanco fresco marinado en limón siciliano, cebolla morada y ají biquinho.",
+        "item-lula-name": "Calamares Crujientes", "item-lula-desc": "Anillos de calamar rebozados, servidos con mayonesa de ajo confitado.",
+        "item-moqueca-name": "Moqueca Bahiana", "item-moqueca-desc": "Filetes de róbalo y camarones G en aceite de palma. Acompañado de arroz y pirão.",
+        "item-polvo-name": "Pulpo a la Brasa", "item-polvo-desc": "Tentáculos tiernos a la parrilla con patatas al murro y ajo asado.",
+        "item-risoto-name": "Risotto de Mares", "item-risoto-desc": "Arroz arbóreo cremoso terminado con calamares, mejillones y camarones medianos.",
+        "item-gin-name": "Gin Tropical", "item-gin-desc": "Ginebra, tónica, naranja, maracuyá y rama de romero fresco.",
+        "item-caipira-name": "Caipirinha Clásica", "item-caipira-desc": "Cachaça artesanal, lima, hielo y azúcar.",
+        "item-beer-name": "Cervezas", "item-beer-desc": "Selección de 600mL y Long Necks",
+        "item-soda-name": "Refrescos", "item-soda-desc": "Lata 350ml: Coca-Cola, Guaraná y Sprite.",
+        "item-water-name": "Aguas", "item-water-desc": "Agua mineral 500ml, disponible con y sin gas.",
+        "item-noalc-name": "Sin alcohol", "item-noalc-desc": "Sucos naturales, tés helados de la casa y Mocktails especiales.",
+        "footer-brand-subtitle": "Mariscos", "footer-brand-desc": "Menú digital de Caravela: mariscos, bebidas especiales y una experiencia gastronómica con frescura oceánica.",
+        "footer-title-menu": "Menú", "footer-link-entradas": "Entradas", "footer-link-principais": "Platos Principales", "footer-link-drinks": "Tragos", "footer-link-bebidas": "Bebidas",
+        "footer-title-contact": "Contacto", "footer-link-wa": "Chatear por WhatsApp", "footer-address": "Rua das Palmeiras, 299<br>Guadalupe",
+        "footer-title-hours": "Horario", "footer-hours-week": "Lun a Vie<br>12h a 23h", "footer-hours-weekend": "Sáb y Dom<br>11h a 00h",
+        "footer-copy": "© 2026 Caravela – Restaurante de Mariscos. Todos los derechos reservados.", "footer-dev": "Desarrollado para una experiencia de menú digital moderna.",
+        "search-placeholder": "Buscar en el menú...",
+        "no-results": "No se encontraron platos.",
+        "modal-beer-title": "Cervezas", "modal-beer-ln": "Long Neck 330ml", "modal-beer-bt": "Botella 600ml",
+        "modal-soda-title": "Refrescos", "modal-soda-can": "Lata 350ml",
+        "modal-water-title": "Aguas", "modal-water-still": "Agua Mineral", "modal-water-spark": "Agua con Gas",
+        "modal-noalc-title": "Sin alcohol", "modal-noalc-juice": "Zumo de Naranja", "modal-noalc-natural": "Natural 400ml", "modal-noalc-tea": "Té Helado de la Casa", "modal-noalc-flav": "Limón y Menta"
+      }
+    };
+
+    function setLanguage(lang) {
+      document.documentElement.lang = lang === 'pt' ? 'pt-BR' : lang;
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang][key]) {
+          el.innerHTML = translations[lang][key];
+        }
+      });
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (translations[lang][key]) {
+          el.placeholder = translations[lang][key];
+        }
+      });
+    }
+
+    function handleSearch(query) {
+      const term = query.toLowerCase().trim();
+      const cards = document.querySelectorAll('.menu-card');
+      const sections = document.querySelectorAll('.menu-section');
+      let count = 0;
+
+      cards.forEach(card => {
+        const text = card.innerText.toLowerCase();
+        const isMatch = text.includes(term);
+        card.style.display = isMatch ? 'flex' : 'none';
+        if (isMatch) count++;
+      });
+
+      sections.forEach(sec => {
+        const visible = Array.from(sec.querySelectorAll('.menu-card')).some(c => c.style.display !== 'none');
+        sec.style.display = visible ? 'block' : 'none';
+      });
+
+      document.getElementById('no-results').style.display = count === 0 ? 'block' : 'none';
+    }
+
+    /* ---- LÓGICA DO CARROSSEL ---- */
+    function slide(btn, direction) {
+      const container = btn.parentElement.querySelector('.menu-grid');
+      const card = container.querySelector('.menu-card');
+      const gap = parseInt(getComputedStyle(container).gap) || 20;
+      const scrollAmount = card.offsetWidth + gap; // Scroll exato de 1 card por vez
+      container.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+    }
+
+    /* ---- SCROLL PARA CATEGORIAS ---- */
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        const offset = el.getBoundingClientRect().top + window.scrollY - 140;
+        window.scrollTo({ top: offset, behavior: 'smooth' });
+      }
+    }
+
+    /* ---- LÓGICA DE MODAIS ---- */
+    function openModal(id) {
+      document.getElementById(id).classList.add('active');
+    }
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+    // Fechar ao clicar fora do conteúdo
+    window.addEventListener('click', (e) => {
+      if(e.target.classList.contains('modal-overlay')) {
+        e.target.classList.remove('active');
+      }
+    });
+
+    /* ---- VÍDEO NO HOVER/TOUCH (EXPERIÊNCIA IMERSIVA) ---- */
+    document.querySelectorAll('.menu-card').forEach(card => {
+      const video = card.querySelector('.card-video');
+      if (video) {
+        const playVideo = () => video.play().catch(() => {});
+        const stopVideo = () => {
+          video.pause();
+          video.currentTime = 0;
+        };
+
+        card.addEventListener('mouseenter', playVideo);
+        card.addEventListener('mouseleave', stopVideo);
+        card.addEventListener('touchstart', playVideo, { passive: true });
+      }
+    });
+
+    /* ---- ATUALIZA MENU ATIVO NO SCROLL ---- */
+    const sections = document.querySelectorAll('.menu-section');
+    const navBtns = document.querySelectorAll('.cat-btn');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        if (scrollY >= sectionTop - 150) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      navBtns.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.getAttribute('onclick').includes(current)) {
+          btn.classList.add('active');
+          // Centraliza botão no mobile nav
+          const navContainer = document.querySelector('.cat-nav-inner');
+          navContainer.scrollLeft = btn.offsetLeft - (navContainer.offsetWidth / 2) + (btn.offsetWidth / 2);
+        }
+      });
+    }, { passive: true });
+
+    /* ---- SCROLL REVEAL (Manter a sofisticação) ---- */
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.05, rootMargin: "0px 0px -50px 0px" });
+
+    revealEls.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
